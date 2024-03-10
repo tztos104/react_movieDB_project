@@ -1,17 +1,32 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
+import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth'
 
 const Nav = () => {
 
-  
-  
+  const initialUserData = localStorage.getItem('userData') ?
+    JSON.parse(localStorage.getItem('userData')) : {};
+
   const [show, setShow] = useState(false);
   const { pathname } = useLocation();
   const [searchValue, setSearchValue] = useState("");
   const navigate = useNavigate();
-  
+  const auth = getAuth();
+  const provider = new GoogleAuthProvider();
+  const [userData, setUserData] = useState(initialUserData);
 
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        if (pathname === "/") {
+          navigate("/main");
+        }
+      } else {
+        navigate("/");
+      }
+    })
+  }, [auth, navigate, pathname])
 
 
   useEffect(() => {
@@ -36,9 +51,27 @@ const Nav = () => {
     navigate(`/search?q=${e.target.value}`);
   }
 
- 
+  const handleAuth = () => {
+    signInWithPopup(auth, provider)
+      .then(result => {
+        setUserData(result.user);
+        localStorage.setItem("userData", JSON.stringify(result.user));
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  }
 
- 
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        setUserData({});
+        navigate(`/`);
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
 
   return (
     <NavWrapper show={show}>
@@ -51,7 +84,7 @@ const Nav = () => {
       </Logo>
 
       {pathname === "/" ?
-        (<Login >Login</Login>) :
+        (<Login onClick={handleAuth}>Login</Login>) :
         <>
           <Input
             value={searchValue}
@@ -62,9 +95,9 @@ const Nav = () => {
           />
 
           <SignOut>
-          
+            <UserImg src={userData.photoURL} alt={userData.displayName} />
             <DropDown>
-              <span>Sign Out</span>
+              <span onClick={handleSignOut}>Sign Out</span>
             </DropDown>
           </SignOut>
         </>
@@ -107,7 +140,11 @@ const SignOut = styled.div`
   }
 `;
 
-
+const UserImg = styled.img`
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+`;
 
 
 const Login = styled.a`
