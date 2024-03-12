@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage';
 import MainPage from './pages/MainPage';
 import SearchPage from './pages/SearchPage';
 import DetailPage from './pages/DetailPage';
+import JoinPage from './pages/JoinPage';
 
 const Layout =() => {
   return(
@@ -26,6 +27,7 @@ function App() {
           <Route path="main" element={<MainPage />} />
           <Route path=":movieId" element={<DetailPage />} />
           <Route path="search" element={<SearchPage />} />
+          <Route path="join" element={<JoinPage />} />
         </Route>
       </Routes>
    </div>

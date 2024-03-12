@@ -1,13 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-
+import { Link } from 'react-router-dom';
 const LoginPage = () => {
   return (
     <Container>
       <Content>
         <Center>
           <LogoOne src="/images/cta-logo-one.svg" alt="logo-one" />
-          <SignUpLink>지금 가입</SignUpLink>
+          <SignUpLink to="/join">지금 가입</SignUpLink>
           <Description>
             영화에 대한 프리미어 액세스를 얻으십시오.
             디즈니 플러스 가격은 다음 주부터 1000원 인상됩니다.
@@ -72,7 +72,7 @@ const LogoOne = styled.img`
   width: 100%;
 `;
 
-const SignUpLink = styled.a`
+const SignUpLink = styled(Link)`
   font-weight: bold;
   color: #f9f9f9;
   background-color: #0063e5;

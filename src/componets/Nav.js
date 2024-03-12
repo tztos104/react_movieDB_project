@@ -22,8 +22,13 @@ const Nav = () => {
         if (pathname === "/") {
           navigate("/main");
         }
+      
+
       } else {
-        navigate("/");
+        if(pathname ==="/join"){
+          navigate("/join");
+        }else{
+        navigate("/");}
       }
     })
   }, [auth, navigate, pathname])

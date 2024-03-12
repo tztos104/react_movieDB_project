@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import app from './firebase';
+// eslint-disable-next-line
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
